@@ -246,17 +246,65 @@ function loadDB(){
 
 function saveDB(){
   try{
-    DB._ts = Date.now(); // 저장 시간 (실시간 동기화 충돌 방지용)
-    localStorage.setItem(KEY,JSON.stringify(DB));
+    DB._ts = Date.now();
+
+    // JSON 직렬화 시도
+    let jsonStr;
+    try{
+      jsonStr = JSON.stringify(DB);
+    }catch(jsonErr){
+      console.error('JSON 직렬화 실패:', jsonErr);
+      const b=document.getElementById('syncBanner');
+      if(b){b.textContent='⚠️ 저장 실패 (데이터 오류)';b.classList.add('warn');}
+      return;
+    }
+
+    // localStorage 저장 시도
+    try{
+      localStorage.setItem(KEY, jsonStr);
+    }catch(storageErr){
+      // 용량 초과(QuotaExceededError) 시 이력 줄여서 재시도
+      console.warn('localStorage 용량 초과, 이력 정리 중...');
+      if(DB.scoreHistory && DB.scoreHistory.length > 10){
+        // 최근 10개만 유지
+        DB.scoreHistory = DB.scoreHistory.slice(0, 10);
+        try{
+          localStorage.setItem(KEY, JSON.stringify(DB));
+          const b=document.getElementById('syncBanner');
+          if(b){b.textContent='⚠️ 저장공간 부족 — 이력 자동 정리됨';b.classList.add('warn');}
+          if(window.fbSave) window.fbSave(DB);
+          return;
+        }catch(e2){
+          // 그래도 안되면 이력 전체 삭제 후 재시도
+          DB.scoreHistory = [];
+          try{
+            localStorage.setItem(KEY, JSON.stringify(DB));
+            const b=document.getElementById('syncBanner');
+            if(b){b.textContent='⚠️ 저장공간 부족 — 이력 전체 삭제됨';b.classList.add('warn');}
+            if(window.fbSave) window.fbSave(DB);
+            return;
+          }catch(e3){
+            const b=document.getElementById('syncBanner');
+            if(b){b.textContent='⚠️ 저장 실패 — 저장공간 부족';b.classList.add('warn');}
+            return;
+          }
+        }
+      }
+    }
+
+    // 성공
     const t=new Date();
     const ts=`${t.getHours().toString().padStart(2,'0')}:${t.getMinutes().toString().padStart(2,'0')}`;
     const b=document.getElementById('syncBanner');
-    if(b){ b.textContent=`✅ 저장 — ${ts}${window._fbConfigured?' (☁️ 클라우드 동기화 중)':' (로컬)'}`; b.classList.remove('warn'); }
+    if(b){ b.textContent=`✅ 저장 — ${ts}${window._fbConfigured?' (☁️ 실시간 동기화)':' (로컬)'}`; b.classList.remove('warn'); }
+
     // Firebase 비동기 저장
     if(window.fbSave) window.fbSave(DB);
+
   }catch(e){
+    console.error('saveDB 오류:', e);
     const b=document.getElementById('syncBanner');
-    if(b){b.textContent='⚠️ 저장 실패';b.classList.add('warn');}
+    if(b){b.textContent=`⚠️ 저장 실패 (${e.name||'오류'})`;b.classList.add('warn');}
   }
 }
 
@@ -2170,6 +2218,8 @@ function renderSetting(){
   <div class="save-btn" onclick="saveDB();T('💾 설정 저장 완료')">💾 설정 저장</div>
 
   <div class="sl">데이터 관리</div>
+  <button class="btn s" onclick="checkStorage()" style="margin-bottom:8px">📊 저장공간 확인</button>
+  <button class="btn s" onclick="trimHistory()" style="margin-bottom:8px;color:var(--ora);border-color:var(--ora)">🗑 이력 정리 (최근 20개 유지)</button>
   <button class="btn s" onclick="importData()" style="margin-bottom:8px">📂 백업 파일 불러오기</button>
   <button class="btn s" onclick="resetData()" style="color:var(--red)">⚠️ 초기 데이터로 리셋</button>`;
 
@@ -2198,6 +2248,29 @@ window.updS=function(k,v){
 };
 
 window.togF=function(k){DB.settings.features[k]=!DB.settings.features[k];saveDB();renderSetting();};
+// 저장공간 확인
+window.checkStorage=function(){
+  try{
+    const data=localStorage.getItem(KEY)||'';
+    const kb=Math.round(data.length/1024);
+    const maxKb=5120; // 보통 5MB 한도
+    const pct=Math.round(kb/maxKb*100);
+    const histCount=(DB.scoreHistory||[]).length;
+    alert(`📊 저장공간 현황\n\n사용: ${kb} KB / 약 5,120 KB (${pct}%)\n모임 이력: ${histCount}개\n\n${pct>70?'⚠️ 저장공간이 부족합니다.\n더보기→설정→이력 정리를 실행하세요.':'✅ 여유 있습니다.'}`);
+  }catch(e){ T('⚠️ 확인 실패'); }
+};
+
+// 이력 정리 (최근 20개만 유지)
+window.trimHistory=function(){
+  const before=(DB.scoreHistory||[]).length;
+  if(before===0){ T('정리할 이력이 없습니다'); return; }
+  if(!confirm(`현재 이력 ${before}개 중 최근 20개만 남기고 삭제합니다.\n\n⚠️ 오래된 이력은 복구할 수 없습니다.\n계속하시겠습니까?`)) return;
+  DB.scoreHistory=(DB.scoreHistory||[]).slice(0,20);
+  saveDB();
+  T(`✅ 이력 정리 완료 (${before}개 → ${DB.scoreHistory.length}개)`);
+  renderSetting();
+};
+
 window.resetData=function(){
   if(!confirm('모든 데이터를 초기화합니다.')) return;
   if(!confirm('정말 초기화? 되돌릴 수 없습니다!')) return;
