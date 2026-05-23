@@ -248,47 +248,54 @@ function saveDB(){
   try{
     DB._ts = Date.now();
 
-    // JSON 직렬화 시도
+    // 저장할 데이터 준비 (DOM·함수 등 직렬화 불가 항목 제거)
     let jsonStr;
     try{
       jsonStr = JSON.stringify(DB);
     }catch(jsonErr){
-      console.error('JSON 직렬화 실패:', jsonErr);
+      console.error('JSON 직렬화 실패:', jsonErr.message);
       const b=document.getElementById('syncBanner');
-      if(b){b.textContent='⚠️ 저장 실패 (데이터 오류)';b.classList.add('warn');}
+      if(b){b.textContent='⚠️ 저장 실패 (데이터 변환 오류)';b.classList.add('warn');}
       return;
     }
 
-    // localStorage 저장 시도
+    // 크기 체크 (4MB 초과 시 이력 자동 축소)
+    if(jsonStr.length > 4*1024*1024){
+      if(DB.scoreHistory && DB.scoreHistory.length > 5){
+        DB.scoreHistory = DB.scoreHistory.slice(0,5);
+        jsonStr = JSON.stringify(DB);
+        const b=document.getElementById('syncBanner');
+        if(b){b.textContent='⚠️ 저장공간 부족 — 이력 자동 축소됨';b.classList.add('warn');}
+      }
+    }
+
+    // localStorage 저장
     try{
       localStorage.setItem(KEY, jsonStr);
     }catch(storageErr){
-      // 용량 초과(QuotaExceededError) 시 이력 줄여서 재시도
-      console.warn('localStorage 용량 초과, 이력 정리 중...');
-      if(DB.scoreHistory && DB.scoreHistory.length > 10){
-        // 최근 10개만 유지
-        DB.scoreHistory = DB.scoreHistory.slice(0, 10);
+      // QuotaExceededError — 이력 단계적 제거
+      console.warn('localStorage 용량 초과:', storageErr.message);
+      const steps=[10,5,3,0];
+      let saved=false;
+      for(const keep of steps){
         try{
+          DB.scoreHistory = keep>0 ? (DB.scoreHistory||[]).slice(0,keep) : [];
           localStorage.setItem(KEY, JSON.stringify(DB));
+          saved=true;
           const b=document.getElementById('syncBanner');
-          if(b){b.textContent='⚠️ 저장공간 부족 — 이력 자동 정리됨';b.classList.add('warn');}
-          if(window.fbSave) window.fbSave(DB);
-          return;
-        }catch(e2){
-          // 그래도 안되면 이력 전체 삭제 후 재시도
-          DB.scoreHistory = [];
-          try{
-            localStorage.setItem(KEY, JSON.stringify(DB));
-            const b=document.getElementById('syncBanner');
-            if(b){b.textContent='⚠️ 저장공간 부족 — 이력 전체 삭제됨';b.classList.add('warn');}
-            if(window.fbSave) window.fbSave(DB);
-            return;
-          }catch(e3){
-            const b=document.getElementById('syncBanner');
-            if(b){b.textContent='⚠️ 저장 실패 — 저장공간 부족';b.classList.add('warn');}
-            return;
+          if(b){
+            b.textContent=keep>0
+              ?`⚠️ 저장공간 부족 — 이력 ${keep}개로 축소됨`
+              :'⚠️ 저장공간 부족 — 이력 전체 삭제됨';
+            b.classList.add('warn');
           }
-        }
+          break;
+        }catch(e){}
+      }
+      if(!saved){
+        const b=document.getElementById('syncBanner');
+        if(b){b.textContent='⚠️ 저장 실패 — 저장공간 초과 (브라우저 캐시를 지워주세요)';b.classList.add('warn');}
+        return;
       }
     }
 
@@ -304,7 +311,7 @@ function saveDB(){
   }catch(e){
     console.error('saveDB 오류:', e);
     const b=document.getElementById('syncBanner');
-    if(b){b.textContent=`⚠️ 저장 실패 (${e.name||'오류'})`;b.classList.add('warn');}
+    if(b){b.textContent=`⚠️ 저장 실패 (${e.name}: ${e.message})`;b.classList.add('warn');}
   }
 }
 
@@ -2338,13 +2345,7 @@ window.showDataMenu=function(){
 
 window.importData=function(mode){
   mode=mode||'replace';
-  const modeLabel={
-    'replace':'전체 교체',
-    'merge-history':'모임 이력 병합',
-    'merge-finance':'장부만 가져오기',
-    'merge-members':'회원 정보만 가져오기'
-  }[mode];
-
+  const modeLabel={'replace':'전체 교체','merge-history':'모임 이력 병합','merge-finance':'장부만 가져오기','merge-members':'회원 정보만 가져오기'}[mode];
   const inp=document.createElement('input');
   inp.type='file'; inp.accept='.json';
   inp.onchange=function(e){
@@ -2352,54 +2353,71 @@ window.importData=function(mode){
     const r=new FileReader();
     r.onload=function(ev){
       try{
-        const d=JSON.parse(ev.target.result);
-        if(!d.members) return T('⚠️ 올바른 백업 파일이 아닙니다');
+        let d;
+        try{ d=JSON.parse(ev.target.result); }
+        catch(pe){ T('⚠️ 파일 형식 오류 — JSON 파일이 아닙니다'); return; }
 
-        const fileName=file.name;
-        if(!confirm(`📥 [${modeLabel}]\n\n파일: ${fileName}\n\n계속하시겠습니까?`)) return;
+        if(!d.members) return T('⚠️ 올바른 백업 파일이 아닙니다 (members 없음)');
+        if(!confirm('📥 ['+modeLabel+']\n\n파일: '+file.name+'\n\n계속하시겠습니까?')) return;
 
         if(mode==='replace'){
-          // 전체 교체 — 재로드
-          localStorage.setItem(KEY,JSON.stringify(d));
-          T('✅ 데이터 교체 완료 — 재시작합니다');
-          setTimeout(()=>location.reload(),800);
+          // 전체 교체 — localStorage 직접 저장 후 reload
+          // 파일이 크면 이력 먼저 줄여서 시도
+          let saveObj=d;
+          let jsonStr=JSON.stringify(saveObj);
+          const kb=Math.round(jsonStr.length/1024);
+
+          // 4MB 초과 시 이력 축소
+          if(jsonStr.length > 4*1024*1024){
+            const histLen=(d.scoreHistory||[]).length;
+            if(histLen>0 && confirm('⚠️ 백업 파일이 큽니다 ('+kb+'KB).\n\n이력('+histLen+'개)을 제외하고 가져오시겠습니까?\n[확인] 이력 제외\n[취소] 취소')){
+              saveObj={...d, scoreHistory:[]};
+              jsonStr=JSON.stringify(saveObj);
+            } else if(histLen===0){
+              T('⚠️ 파일이 너무 큽니다 ('+kb+'KB). 저장 불가');
+              return;
+            } else {
+              T('가져오기가 취소되었습니다');
+              return;
+            }
+          }
+
+          try{
+            // 기존 데이터 먼저 삭제 후 저장 (공간 확보)
+            localStorage.removeItem(KEY);
+            localStorage.setItem(KEY, jsonStr);
+            T('✅ 데이터 교체 완료 — 재시작합니다');
+            setTimeout(()=>location.reload(), 800);
+          }catch(se){
+            T('⚠️ 저장 실패 ('+Math.round(jsonStr.length/1024)+'KB) — 저장공간 부족. 먼저 이력 정리 후 시도하세요');
+          }
 
         }else if(mode==='merge-history'){
-          // 이력 병합 — 날짜 기준으로 중복 제거
           if(!DB.scoreHistory) DB.scoreHistory=[];
           const incoming=d.scoreHistory||[];
           let added=0;
-          incoming.forEach(h=>{
-            if(!DB.scoreHistory.find(x=>x.date===h.date)){
-              DB.scoreHistory.push(h); added++;
-            }
-          });
+          incoming.forEach(h=>{ if(!DB.scoreHistory.find(x=>x.date===h.date)){ DB.scoreHistory.push(h); added++; } });
           DB.scoreHistory.sort((a,b)=>b.date.localeCompare(a.date));
           saveDB(); renderMore();
-          T(`✅ 이력 ${added}개 추가 (총 ${DB.scoreHistory.length}개)`);
+          T('✅ 이력 '+added+'개 추가 (총 '+DB.scoreHistory.length+'개)');
 
         }else if(mode==='merge-finance'){
-          // 장부 교체
+          if(!d.finance) return T('⚠️ 파일에 장부 데이터가 없습니다');
           DB.finance=JSON.parse(JSON.stringify(d.finance));
           saveDB(); renderMore();
           T('✅ 장부 데이터 적용 완료');
 
         }else if(mode==='merge-members'){
-          // 회원 정보 업데이트 (이름 기준 매칭)
           let updated=0, added=0;
           (d.members||[]).forEach(dm=>{
             const idx=DB.members.findIndex(m=>m.nm===dm.nm);
-            if(idx>=0){
-              DB.members[idx]={...DB.members[idx], aver:dm.aver, handicap:dm.handicap||0, team:dm.team, group:dm.group, role:dm.role, fee:dm.fee};
-              updated++;
-            }else{
-              DB.members.push({...dm}); added++;
-            }
+            if(idx>=0){ DB.members[idx]={...DB.members[idx],aver:dm.aver,handicap:dm.handicap||0,team:dm.team,group:dm.group,role:dm.role,fee:dm.fee}; updated++; }
+            else{ DB.members.push({...dm}); added++; }
           });
           sortMembers(); saveDB(); renderMore();
-          T(`✅ 회원 ${updated}명 업데이트, ${added}명 추가`);
+          T('✅ 회원 '+updated+'명 업데이트, '+added+'명 추가');
         }
-      }catch(err){ T('⚠️ 파일 읽기 실패: '+err.message); }
+      }catch(err){ T('⚠️ 가져오기 실패: '+err.message); console.error('importData 오류:',err); }
     };
     r.readAsText(file);
   };
