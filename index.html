@@ -152,20 +152,20 @@ header {
 .mr-idx{font-size:13px;color:var(--txt2);width:22px;flex-shrink:0;text-align:right;margin-right:9px}
 .mr-nm{font-size:17px;font-weight:700;color:#fff;width:62px;flex-shrink:0}
 .mr-info{flex:1;min-width:0}
-.mr-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
-.gchip{background:var(--s3);border-radius:5px;padding:4px 8px;font-size:13px;font-weight:600;color:#d0daf0}
+.mr-chips{display:flex;gap:6px;flex-wrap:nowrap;margin-top:0;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.gchip{background:var(--s3);border-radius:6px;padding:4px 9px;font-size:16px;font-weight:600;color:#d0daf0;white-space:nowrap;flex-shrink:0}
 .gchip.hi{background:rgba(232,73,73,.3);color:#ffaaaa}
 .mr-score{text-align:right;flex-shrink:0}
 .mr-avg{font-size:22px;font-weight:900;color:var(--ora)}
 .mr-total{font-size:13px;color:var(--blu);font-weight:700;margin-top:2px}
 
 /* ── 조 배지 ── */
-.gb{font-size:12px;font-weight:700;padding:3px 8px;border-radius:5px}
+.gb{font-size:16px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap}
 .gb.ga{background:#0d1e33;color:var(--blu);border:1px solid var(--blu)}
 .gb.gb2{background:#0d2b1a;color:var(--grn);border:1px solid var(--grn)}
 .gb.gc{background:#2b0d0d;color:var(--red);border:1px solid var(--red)}
 .gb.gd{background:#1a0d2b;color:var(--pur);border:1px solid var(--pur)}
-.rb{font-size:12px;font-weight:700;padding:3px 8px;border-radius:5px;background:#1a0d2b;color:var(--pur);border:1px solid var(--pur)}
+.rb{font-size:16px;font-weight:700;padding:3px 9px;border-radius:6px;background:#1a0d2b;color:var(--pur);border:1px solid var(--pur);white-space:nowrap}
 
 /* ── 조 범례 ── */
 .gl-legend{display:flex;gap:8px;margin-bottom:12px}
@@ -187,29 +187,29 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 /* ── 점수 카드 ── */
 .sc-card{background:var(--s2);border-radius:13px;padding:14px;margin-bottom:10px;border:1px solid var(--bdr)}
-.sc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.sc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .sc-nm{font-size:17px;font-weight:700;color:#fff;width:62px;flex-shrink:0}
-.sc-team{font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px}
+.sc-team{font-size:16px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap;flex-shrink:0}
 .sc-team.a{background:#0d1e33;color:var(--blu)}.sc-team.b{background:#0d2b1a;color:var(--grn)}
 .sc-team.c{background:#2b0d0d;color:var(--red)}.sc-team.d{background:#1a0d2b;color:var(--pur)}.sc-team.n{background:var(--s3);color:var(--txt2)}
-.abs-tog{background:var(--s3);border:1px solid var(--bdr);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--txt2);cursor:pointer;margin-left:auto}
+.abs-tog{background:var(--s3);border:1px solid var(--bdr);border-radius:6px;padding:4px 12px;font-size:15px;color:var(--txt2);cursor:pointer;margin-left:auto;white-space:nowrap;flex-shrink:0}
 .abs-tog.absent{background:#2b0d0d;border-color:var(--red);color:var(--red)}
 .sgi{display:grid;gap:7px}
 .sgf{display:flex;flex-direction:column;align-items:center;gap:3px}
-.sgf label{font-size:12px;color:var(--txt2)}
+.sgf label{font-size:16px;color:var(--txt2)}
 .sgf input{width:100%;background:var(--s3);border:1px solid var(--bdr);border-radius:8px;padding:10px 4px;font-size:20px;font-weight:700;text-align:center;color:#fff;outline:none;font-family:'Noto Sans KR',sans-serif}
 .sgf input.hi{border-color:rgba(232,73,73,.5);color:#ffaaaa}
 .sgf input:focus{border-color:var(--blu)}
 .sgf input::placeholder{color:var(--bdr);font-size:14px;font-weight:400;text-align:center}
 .sgf input:placeholder-shown{background:var(--s2);border-color:var(--bdr);}
 .sgf input:not(:placeholder-shown){background:var(--s3);}
-.sc-sum{margin-top:9px;font-size:13px;color:var(--txt2);display:flex;gap:10px;flex-wrap:wrap}
+.sc-sum{margin-top:9px;font-size:16px;color:var(--txt2);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 /* ── 벌금 행 ── */
 .fil{border-radius:8px;padding:8px 12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .fil.bad{background:#1a0505;border:1px solid rgba(232,73,73,.3)}
 .fil.ok{background:#001a0a;border:1px solid rgba(46,204,113,.3)}
-.fi-l{font-size:12px;flex:1;line-height:1.5}.fi-l.bad{color:#ffaaaa}.fi-l.ok{color:var(--grn)}
+.fi-l{font-size:15px;flex:1;line-height:1.5}.fi-l.bad{color:#ffaaaa}.fi-l.ok{color:var(--grn)}
 .fi-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .fi-amt{font-size:14px;font-weight:700}.fi-amt.bad{color:var(--red)}.fi-amt.ok{color:var(--grn)}
 .fi-chk{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0}
@@ -233,7 +233,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .rk-n.g3{background:rgba(205,127,50,.2);color:#cd7f32;font-size:20px}
 .rk-nm{font-size:17px;font-weight:700;color:#fff;width:62px;flex-shrink:0}
 .rk-info{flex:1;min-width:0}
-.rk-sub{font-size:12px;color:var(--txt2);margin-top:3px}
+.rk-sub{font-size:16px;color:var(--txt2);margin-top:3px;white-space:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .rk-r{text-align:right;flex-shrink:0}
 .rk-total{font-size:20px;font-weight:900;color:var(--ora)}
 .rk-avg{font-size:12px;color:var(--blu);font-weight:700}
@@ -253,7 +253,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 /* ── 성적 테이블 ── */
 .hist-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:11px;border:1px solid var(--bdr);margin-bottom:12px}
-.htbl{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+.htbl{width:100%;border-collapse:collapse;font-size:15px;white-space:nowrap}
 .htbl th{background:var(--s3);color:var(--txt2);padding:9px 7px;font-weight:700;text-align:center;border-bottom:1px solid var(--bdr)}
 .htbl td{padding:8px 7px;text-align:center;border-bottom:1px solid rgba(45,61,92,.4);color:var(--txt)}
 .htbl tr:last-child td{border-bottom:none}
@@ -528,10 +528,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   .mr-nm { font-size: 20px; width: 76px; }
   .mr-avg { font-size: 26px; }
   .mr-total { font-size: 15px; margin-top: 2px; }
-  .mr-chips { gap: 5px; margin-top: 5px; }
-  .gchip { font-size: 15px; padding: 4px 9px; border-radius: 6px; }
-  .gb { font-size: 13px; padding: 3px 9px; border-radius: 6px; }
-  .rb { font-size: 13px; padding: 3px 9px; }
+  .mr-chips { gap: 7px; margin-top: 0; }
+  .gchip { font-size: 19px; padding: 4px 11px; border-radius: 7px; }
+  .gb { font-size: 19px; padding: 3px 11px; border-radius: 7px; }
+  .rb { font-size: 19px; padding: 3px 11px; }
 
   /* 탭 버튼 */
   .tab-btn { font-size: 15px; padding: 12px 8px; border-radius: 10px; }
@@ -539,11 +539,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   /* 점수 입력 카드 */
   .sc-card { padding: 16px; border-radius: 15px; margin-bottom: 12px; }
   .sc-nm { font-size: 20px; width: 76px; }
-  .sc-team { font-size: 13px; }
-  .abs-tog { font-size: 13px; padding: 4px 14px; }
-  .sgf label { font-size: 13px; }
+  .sc-team { font-size: 19px; }
+  .abs-tog { font-size: 17px; padding: 4px 14px; }
+  .sgf label { font-size: 19px; }
   .sgf input { font-size: 26px; padding: 12px 4px; border-radius: 10px; }
-  .sc-sum { font-size: 14px; gap: 14px; margin-top: 10px; }
+  .sc-sum { font-size: 19px; gap: 16px; margin-top: 10px; }
 
   /* 벌금 */
   .fc { padding: 14px; border-radius: 13px; margin-bottom: 12px; }
@@ -552,16 +552,16 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   .fn-why { font-size: 14px; }
   .fn-total { font-size: 15px; margin-top: 8px; padding-top: 8px; }
   .fil { padding: 8px 14px; border-radius: 9px; margin-top: 8px; }
-  .fi-l { font-size: 13px; }
-  .fi-amt { font-size: 16px; }
+  .fi-l { font-size: 17px; }
+  .fi-amt { font-size: 18px; }
 
   /* 순위 */
   .rk { padding: 13px 18px; border-radius: 13px; }
   .rk-n { width: 38px; height: 38px; font-size: 20px; }
   .rk-nm { font-size: 20px; width: 76px; }
   .rk-total { font-size: 22px; }
-  .rk-avg { font-size: 13px; }
-  .rk-sub { font-size: 13px; }
+  .rk-avg { font-size: 16px; }
+  .rk-sub { font-size: 19px; }
 
   /* 시상 */
   .aw-card { padding: 18px; border-radius: 15px; margin-bottom: 12px; }
@@ -571,7 +571,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   .eb { font-size: 13px; padding: 3px 8px; }
 
   /* 성적 테이블 */
-  .htbl { font-size: 14px; }
+  .htbl { font-size: 16px; }
   .htbl th { padding: 9px 7px; }
   .htbl td { padding: 8px 7px; }
 
