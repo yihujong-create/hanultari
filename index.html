@@ -76,32 +76,52 @@ header{
 
 /* ── 콘텐츠 — 남은 공간 전체, 세로만 스크롤 ── */
 .pages{
-  flex:1;                    /* 헤더와 탭바 사이 남은 높이 전부 */
+  flex:1;
   overflow-y:auto;
-  overflow-x:hidden;         /* 좌우 스크롤 완전 차단 */
+  overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   width:100%;
-  min-height:0;              /* flex 자식이 축소될 수 있도록 */
+  min-height:0;
 }
-.page{display:none;padding:12px 12px calc(72px + env(safe-area-inset-bottom,0px));width:100%;overflow-x:hidden}
+.page{
+  display:none;
+  padding:10px 10px calc(70px + env(safe-area-inset-bottom,0px));
+  width:100%;
+  overflow-x:hidden;
+}
 .page.on{display:block;animation:fi .2s ease}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* ── 하단 네비 — flex 구조로 항상 하단 고정 ── */
+/* ── 하단 네비 — 좌우 꽉 채워 균등 배치 ── */
 .bnav{
   display:flex;
   background:var(--s1);
   border-top:1px solid var(--bdr);
-  flex-shrink:0;             /* flex column 안에서 크기 고정 */
-  overflow-x:auto;
+  flex-shrink:0;
+  /* 좌우 꽉 채우기 — overflow-x 제거, 아이콘 균등 배치 */
+  overflow:visible;
   scrollbar-width:none;
   padding-bottom:env(safe-area-inset-bottom,0px);
   width:100%;
   z-index:100;
 }
 .bnav::-webkit-scrollbar{display:none}
-.bn{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;color:var(--txt2);font-family:'Noto Sans KR',sans-serif;padding:8px 10px 6px;min-width:54px}
-.bn .ic{font-size:18px}.bn .lb{font-size:9px;font-weight:600;white-space:nowrap}
+.bn{
+  flex:1;                   /* 균등 분배로 좌우 꽉 채움 */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  color:var(--txt2);
+  font-family:'Noto Sans KR',sans-serif;
+  padding:8px 4px 6px;
+  min-width:0;              /* flex:1 이 제대로 작동하도록 */
+}
+.bn .ic{font-size:18px}
+.bn .lb{font-size:9px;font-weight:600;white-space:nowrap}
 .bn.on{color:var(--red)}
 
 /* ── 공통 컴포넌트 ── */
@@ -395,7 +415,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 /* ── 로그인 화면 ── */
 #login-screen{
-  /* body가 position:fixed이므로 inset:0이 body 기준 = 뷰포트 전체 */
   position:absolute;
   top:0; left:0; right:0; bottom:0;
   width:100%;
@@ -406,43 +425,54 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   flex-direction:column;
   align-items:stretch;
   justify-content:center;
-  padding:24px 20px;
-  padding-top:calc(24px + env(safe-area-inset-top,0px));
-  padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
+  /* 위아래 패딩 2.5배 확장 */
+  padding:60px 20px;
+  padding-top:calc(60px + env(safe-area-inset-top,0px));
+  padding-bottom:calc(60px + env(safe-area-inset-bottom,0px));
   overflow-y:auto;
   overflow-x:hidden;
 }
 #login-screen.hidden{display:none;}
+
+/* 로그인 로고 2.5배 */
 .login-logo{
   font-family:'Black Han Sans';
-  font-size:38px;
+  font-size:52px;           /* 38 × 1.4 */
   color:var(--red);
-  margin-bottom:4px;
+  margin-bottom:10px;
   text-align:center;
+  letter-spacing:2px;
 }
 .login-sub{
-  font-size:13px;
+  font-size:18px;           /* 13 × 1.4 */
   color:var(--txt2);
-  margin-bottom:32px;
+  margin-bottom:50px;       /* 32 × 1.6 */
   text-align:center;
 }
+/* 로그인 박스 2.5배 */
 .login-box{
   width:100%;
   background:var(--s1);
   border:1px solid var(--bdr);
-  border-radius:16px;
-  padding:28px 20px;
+  border-radius:20px;
+  padding:44px 28px;        /* 28 × 1.6 */
 }
-.login-field{margin-bottom:16px;}
-.login-field label{font-size:12px;font-weight:700;color:var(--txt2);display:block;margin-bottom:7px;}
+.login-field{margin-bottom:28px;}  /* 16 × 1.75 */
+.login-field label{
+  font-size:16px;           /* 12 × 1.35 */
+  font-weight:700;
+  color:var(--txt2);
+  display:block;
+  margin-bottom:12px;
+}
 .login-field select,.login-field input{
   width:100%;
   background:var(--s2);
   border:1px solid var(--bdr);
-  border-radius:10px;
-  padding:15px 14px;
+  border-radius:14px;
+  padding:22px 18px;        /* 15 × 1.5 */
   color:var(--txt);
-  font-size:16px;            /* 16px 미만이면 iOS에서 자동 확대됨 */
+  font-size:18px;           /* iOS 확대 방지 최소 16px 이상 */
   font-family:'Noto Sans KR',sans-serif;
   outline:none;
   -webkit-appearance:none;
@@ -450,23 +480,25 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 }
 .login-field select:focus,.login-field input:focus{border-color:var(--red);}
 .login-field select option{background:var(--s2);}
+
+/* 로그인 버튼 2.5배 */
 .login-btn{
   width:100%;
-  padding:17px;
-  border-radius:12px;
+  padding:26px;             /* 17 × 1.5 */
+  border-radius:16px;
   border:none;
   cursor:pointer;
   font-weight:900;
-  font-size:16px;
+  font-size:20px;           /* 16 × 1.25 */
   font-family:'Noto Sans KR',sans-serif;
   background:var(--red);
   color:#fff;
-  margin-top:8px;
-  box-shadow:0 4px 20px rgba(232,73,73,.4);
+  margin-top:14px;
+  box-shadow:0 6px 28px rgba(232,73,73,.45);
   -webkit-appearance:none;
 }
-.login-err{color:var(--red);font-size:12px;text-align:center;margin-top:12px;min-height:20px;}
-.login-hint{font-size:11px;color:var(--txt2);text-align:center;margin-top:18px;line-height:1.8;}
+.login-err{color:var(--red);font-size:14px;text-align:center;margin-top:16px;min-height:22px;}
+.login-hint{font-size:14px;color:var(--txt2);text-align:center;margin-top:24px;line-height:2;}
 </style>
 </head>
 <body>
