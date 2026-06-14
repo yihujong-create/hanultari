@@ -20,50 +20,59 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
-/* ════════════════════════════════════════════
-   모바일 PWA 레이아웃 핵심
-   - html/body 모두 뷰포트 고정
-   - 좌우 스크롤 완전 차단
-   - 헤더·탭바 항상 고정
-   ════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   html/body: 단순하게 전체 크기만
+   ════════════════════════════════════ */
 html{
   width:100%;
   height:100%;
   overflow:hidden;
-  touch-action:pan-y;        /* 위아래 스크롤만 허용, 좌우 차단 */
   overscroll-behavior:none;
 }
 body{
-  /* 뷰포트 전체를 body가 담당 */
-  position:fixed;
-  top:0; left:0; right:0; bottom:0;
   width:100%;
   height:100%;
   overflow:hidden;
   background:var(--bg);
   color:var(--txt);
   font-family:'Noto Sans KR',sans-serif;
-  display:flex;
-  flex-direction:column;
   overscroll-behavior:none;
 }
-/* PC에서만 중앙 정렬·최대폭 (모바일은 100%) */
-@media(min-width:520px){
-  body{
+
+/* ════════════════════════════════════
+   #app-wrap: 실제 앱 컨테이너
+   - 모바일: 뷰포트 100% 꽉 채움
+   - PC(520px↑): 중앙 480px
+   - 내부를 flex column으로
+   ════════════════════════════════════ */
+#app-wrap{
+  position:fixed;
+  top:0; bottom:0;
+  /* 모바일: 양쪽 끝까지 */
+  left:0; right:0;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+/* PC에서만 중앙 480px */
+@media screen and (min-width:520px){
+  #app-wrap{
     left:50%;
     transform:translateX(-50%);
     width:480px;
+    right:auto;
   }
 }
 
-/* ── 헤더 — flex 구조로 항상 상단 고정 ── */
+/* ── 헤더: flex-shrink:0 으로 상단 고정 ── */
 header{
+  flex-shrink:0;
+  width:100%;
   background:linear-gradient(160deg,#1a0808,var(--s1));
   border-bottom:1px solid rgba(232,73,73,.25);
   padding:10px 14px;
   padding-top:calc(10px + env(safe-area-inset-top,0px));
-  flex-shrink:0;             /* flex column 안에서 크기 고정 */
-  width:100%;
   z-index:100;
 }
 .hdr-row{display:flex;justify-content:space-between;align-items:center}
@@ -71,57 +80,64 @@ header{
 .hdr-sync{width:28px;height:28px;background:var(--s2);border:1px solid var(--bdr);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer}
 .hdr-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;cursor:pointer}
 .hdr-meta{display:flex;gap:10px;margin-top:5px;font-size:11px;color:var(--txt2);flex-wrap:wrap}
-.banner{background:#0d2b1a;border-bottom:1px solid #1a5c35;padding:3px 10px;font-size:10px;color:var(--grn);text-align:center;font-weight:700;flex-shrink:0;width:100%}
+
+/* ── 배너: flex-shrink:0 ── */
+.banner{
+  flex-shrink:0;
+  width:100%;
+  background:#0d2b1a;border-bottom:1px solid #1a5c35;
+  padding:3px 10px;font-size:10px;color:var(--grn);
+  text-align:center;font-weight:700;
+}
 .banner.warn{background:#1a1400;border-color:#5c4a1a;color:var(--ora)}
 
-/* ── 콘텐츠 — 남은 공간 전체, 세로만 스크롤 ── */
+/* ── 콘텐츠: flex:1 으로 남은 공간 전부, 위아래만 스크롤 ── */
 .pages{
   flex:1;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
+  min-height:0;             /* 필수: flex 자식이 줄어들 수 있도록 */
   width:100%;
-  min-height:0;
+  overflow-x:hidden;        /* 좌우 스크롤 완전 차단 */
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
 }
 .page{
   display:none;
-  padding:10px 10px calc(70px + env(safe-area-inset-bottom,0px));
   width:100%;
   overflow-x:hidden;
+  padding:10px 10px calc(20px + env(safe-area-inset-bottom,0px));
 }
 .page.on{display:block;animation:fi .2s ease}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* ── 하단 네비 — 좌우 꽉 채워 균등 배치 ── */
+/* ── 탭바: flex-shrink:0 으로 하단 고정, 좌우 꽉 균등 ── */
 .bnav{
+  flex-shrink:0;
+  width:100%;
   display:flex;
   background:var(--s1);
   border-top:1px solid var(--bdr);
-  flex-shrink:0;
-  /* 좌우 꽉 채우기 — overflow-x 제거, 아이콘 균등 배치 */
-  overflow:visible;
-  scrollbar-width:none;
   padding-bottom:env(safe-area-inset-bottom,0px);
-  width:100%;
+  overflow:hidden;
   z-index:100;
 }
-.bnav::-webkit-scrollbar{display:none}
 .bn{
-  flex:1;                   /* 균등 분배로 좌우 꽉 채움 */
+  flex:1;
+  min-width:0;
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content:center;
   gap:2px;
   background:none;
   border:none;
   cursor:pointer;
   color:var(--txt2);
   font-family:'Noto Sans KR',sans-serif;
-  padding:8px 4px 6px;
-  min-width:0;              /* flex:1 이 제대로 작동하도록 */
+  padding:8px 2px 6px;
 }
 .bn .ic{font-size:18px}
-.bn .lb{font-size:9px;font-weight:600;white-space:nowrap}
+.bn .lb{font-size:8px;font-weight:600;white-space:nowrap}
 .bn.on{color:var(--red)}
 
 /* ── 공통 컴포넌트 ── */
@@ -413,19 +429,19 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
    ══════════════════════════════════════════ */
 #print-area { display:none; }
 
-/* ── 로그인 화면 ── */
+/* ── 로그인 화면: 뷰포트 전체를 덮음 ── */
 #login-screen{
-  position:absolute;
+  position:fixed;           /* 뷰포트 기준 전체 덮기 */
   top:0; left:0; right:0; bottom:0;
-  width:100%;
-  height:100%;
+  width:100vw;              /* 뷰포트 너비 100% */
+  height:100vh;
+  height:100dvh;
   background:var(--bg);
   z-index:9999;
   display:flex;
   flex-direction:column;
-  align-items:stretch;
+  align-items:stretch;      /* 자식 좌우 꽉 채움 */
   justify-content:center;
-  /* 위아래 패딩 2.5배 확장 */
   padding:60px 20px;
   padding-top:calc(60px + env(safe-area-inset-top,0px));
   padding-bottom:calc(60px + env(safe-area-inset-bottom,0px));
@@ -524,46 +540,50 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="login-hint">초기 비밀번호: <b>0000</b><br>로그인 후 비밀번호 변경 가능</div>
   </div>
 </div>
-<header>
-  <div class="hdr-row">
-    <div class="hdr-logo">🎳 한울타리</div>
-    <div style="display:flex;align-items:center;gap:7px">
-      <div id="hdr-user" style="font-size:10px;color:var(--txt2);cursor:pointer" onclick="showUserMenu()"></div>
-      <div class="hdr-sync" onclick="syncNow()">🔄</div>
-      <div class="hdr-badge" id="meetBadge">정기모임 ▾</div>
+
+<!-- ── 앱 본체 래퍼 ── -->
+<div id="app-wrap">
+  <header>
+    <div class="hdr-row">
+      <div class="hdr-logo">🎳 한울타리</div>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div id="hdr-user" style="font-size:10px;color:var(--txt2);cursor:pointer" onclick="showUserMenu()"></div>
+        <div class="hdr-sync" onclick="syncNow()">🔄</div>
+        <div class="hdr-badge" id="meetBadge">정기모임 ▾</div>
+      </div>
     </div>
-  </div>
-  <div class="hdr-meta">
-    <span>📅 <b id="hdrDate">2026-04-25</b></span>
-    <span>👥 <b id="hdrCount">13</b>명</span>
-    <span>🎳 <b id="hdrGames">3게임</b></span>
-    <span style="color:var(--grn);font-weight:700">v2.0</span>
-  </div>
-</header>
-<div class="banner" id="syncBanner">✅ 로컬 저장 준비</div>
+    <div class="hdr-meta">
+      <span>📅 <b id="hdrDate">2026-04-25</b></span>
+      <span>👥 <b id="hdrCount">13</b>명</span>
+      <span>🎳 <b id="hdrGames">3게임</b></span>
+      <span style="color:var(--grn);font-weight:700">v2.0</span>
+    </div>
+  </header>
+  <div class="banner" id="syncBanner">✅ 로컬 저장 준비</div>
 
-<div class="pages" id="pages">
-  <div class="page on" id="pg-dash"></div>
-  <div class="page"    id="pg-score"></div>
-  <div class="page"    id="pg-award"></div>
-  <div class="page"    id="pg-rank"></div>
-  <div class="page"    id="pg-hist"></div>
-  <div class="page"    id="pg-fin"></div>
-  <div class="page"    id="pg-more"></div>
-  <div class="page"    id="pg-member"></div>
-  <div class="page"    id="pg-const"></div>
-  <div class="page"    id="pg-setting"></div>
-</div>
+  <div class="pages" id="pages">
+    <div class="page on" id="pg-dash"></div>
+    <div class="page"    id="pg-score"></div>
+    <div class="page"    id="pg-award"></div>
+    <div class="page"    id="pg-rank"></div>
+    <div class="page"    id="pg-hist"></div>
+    <div class="page"    id="pg-fin"></div>
+    <div class="page"    id="pg-more"></div>
+    <div class="page"    id="pg-member"></div>
+    <div class="page"    id="pg-const"></div>
+    <div class="page"    id="pg-setting"></div>
+  </div>
 
-<nav class="bnav">
-  <button class="bn on" id="bn-dash"  onclick="go('dash')"> <span class="ic">📊</span><span class="lb">대시보드</span></button>
-  <button class="bn"    id="bn-score" onclick="go('score')"><span class="ic">🎳</span><span class="lb">점수입력</span></button>
-  <button class="bn"    id="bn-award" onclick="go('award')"><span class="ic">🏆</span><span class="lb">시상/벌금</span></button>
-  <button class="bn"    id="bn-rank"  onclick="go('rank')"> <span class="ic">🔢</span><span class="lb">순위</span></button>
-  <button class="bn"    id="bn-hist"  onclick="go('hist')"> <span class="ic">📈</span><span class="lb">성적표</span></button>
-  <button class="bn"    id="bn-fin"   onclick="go('fin')">  <span class="ic">💰</span><span class="lb">장부</span></button>
-  <button class="bn"    id="bn-more"  onclick="go('more')"> <span class="ic">☰</span><span class="lb">더보기</span></button>
-</nav>
+  <nav class="bnav">
+    <button class="bn on" id="bn-dash"  onclick="go('dash')"> <span class="ic">📊</span><span class="lb">대시보드</span></button>
+    <button class="bn"    id="bn-score" onclick="go('score')"><span class="ic">🎳</span><span class="lb">점수입력</span></button>
+    <button class="bn"    id="bn-award" onclick="go('award')"><span class="ic">🏆</span><span class="lb">시상/벌금</span></button>
+    <button class="bn"    id="bn-rank"  onclick="go('rank')"> <span class="ic">🔢</span><span class="lb">순위</span></button>
+    <button class="bn"    id="bn-hist"  onclick="go('hist')"> <span class="ic">📈</span><span class="lb">성적표</span></button>
+    <button class="bn"    id="bn-fin"   onclick="go('fin')">  <span class="ic">💰</span><span class="lb">장부</span></button>
+    <button class="bn"    id="bn-more"  onclick="go('more')"> <span class="ic">☰</span><span class="lb">더보기</span></button>
+  </nav>
+</div><!-- /#app-wrap -->
 
 <div id="toast"></div>
 <div id="installBar"><span>📲 홈 화면에 앱 추가</span><button onclick="installApp()">설치</button></div>
