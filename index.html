@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0c0f1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -20,53 +20,38 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
-/* ════════════════════════════════════
-   html/body: 단순하게 전체 크기만
-   ════════════════════════════════════ */
-html{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  overscroll-behavior:none;
-}
-body{
-  position:fixed;
-  top:0; left:0; right:0; bottom:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:var(--bg);
-  color:var(--txt);
-  font-family:'Noto Sans KR',sans-serif;
-  overscroll-behavior:none;
-  margin:0;
-  padding:0;
+/* ── 기본 리셋 ── */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'Noto Sans KR', sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
-/* ════════════════════════════════════
-   #app-wrap: 항상 화면 전체 (좌우 100%)
-   PC/모바일 구분 없이 뷰포트 꽉 채움
-   ════════════════════════════════════ */
-#app-wrap{
-  position:fixed;
-  top:0; left:0; right:0; bottom:0;
-  width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  background:var(--bg);
+/* ── 앱 전체 컨테이너: 뷰포트 꽉 채움 ── */
+#app-wrap {
+  position: fixed;
+  inset: 0;                 /* top:0 left:0 right:0 bottom:0 한번에 */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
 }
 
-/* ── 헤더: flex-shrink:0 으로 상단 고정 ── */
-header{
-  flex-shrink:0;
-  width:100%;
-  background:linear-gradient(160deg,#1a0808,var(--s1));
-  border-bottom:1px solid rgba(232,73,73,.25);
-  padding:10px 14px;
-  padding-top:calc(10px + env(safe-area-inset-top,0px));
-  z-index:100;
+/* ── 헤더: 상단 고정 ── */
+header {
+  flex-shrink: 0;
+  background: linear-gradient(160deg,#1a0808,var(--s1));
+  border-bottom: 1px solid rgba(232,73,73,.25);
+  padding: 10px 14px;
+  padding-top: calc(10px + env(safe-area-inset-top,0px));
 }
 .hdr-row{display:flex;justify-content:space-between;align-items:center}
 .hdr-logo{font-family:'Black Han Sans';font-size:20px;color:var(--red)}
@@ -74,60 +59,56 @@ header{
 .hdr-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;cursor:pointer}
 .hdr-meta{display:flex;gap:10px;margin-top:5px;font-size:11px;color:var(--txt2);flex-wrap:wrap}
 
-/* ── 배너: flex-shrink:0 ── */
-.banner{
-  flex-shrink:0;
-  width:100%;
-  background:#0d2b1a;border-bottom:1px solid #1a5c35;
-  padding:3px 10px;font-size:10px;color:var(--grn);
-  text-align:center;font-weight:700;
+/* ── 배너: 헤더 바로 아래 고정 ── */
+.banner {
+  flex-shrink: 0;
+  background: #0d2b1a;
+  border-bottom: 1px solid #1a5c35;
+  padding: 3px 10px;
+  font-size: 10px;
+  color: var(--grn);
+  text-align: center;
+  font-weight: 700;
 }
 .banner.warn{background:#1a1400;border-color:#5c4a1a;color:var(--ora)}
 
-/* ── 콘텐츠: flex:1 으로 남은 공간 전부, 위아래만 스크롤 ── */
-.pages{
-  flex:1;
-  min-height:0;             /* 필수: flex 자식이 줄어들 수 있도록 */
-  width:100%;
-  overflow-x:hidden;        /* 좌우 스크롤 완전 차단 */
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
+/* ── 콘텐츠: 남은 공간 전부, 위아래만 스크롤 ── */
+.pages {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.page{
-  display:none;
-  width:100%;
-  overflow-x:hidden;
-  padding:10px 10px calc(20px + env(safe-area-inset-bottom,0px));
+.page {
+  display: none;
+  padding: 10px 10px calc(16px + env(safe-area-inset-bottom,0px));
 }
-.page.on{display:block;animation:fi .2s ease}
+.page.on {display:block;animation:fi .2s ease}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* ── 탭바: flex-shrink:0 으로 하단 고정, 좌우 꽉 균등 ── */
-.bnav{
-  flex-shrink:0;
-  width:100%;
-  display:flex;
-  background:var(--s1);
-  border-top:1px solid var(--bdr);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  overflow:hidden;
-  z-index:100;
+/* ── 탭바: 하단 고정, 7개 버튼 균등 배치 ── */
+.bnav {
+  flex-shrink: 0;
+  display: flex;
+  background: var(--s1);
+  border-top: 1px solid var(--bdr);
+  padding-bottom: env(safe-area-inset-bottom,0px);
 }
-.bn{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:2px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  color:var(--txt2);
-  font-family:'Noto Sans KR',sans-serif;
-  padding:8px 2px 6px;
+.bn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--txt2);
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 8px 2px 6px;
 }
 .bn .ic{font-size:18px}
 .bn .lb{font-size:8px;font-weight:600;white-space:nowrap}
