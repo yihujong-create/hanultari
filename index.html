@@ -30,6 +30,8 @@ html{
   overscroll-behavior:none;
 }
 body{
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
   width:100%;
   height:100%;
   overflow:hidden;
@@ -37,32 +39,23 @@ body{
   color:var(--txt);
   font-family:'Noto Sans KR',sans-serif;
   overscroll-behavior:none;
+  margin:0;
+  padding:0;
 }
 
 /* ════════════════════════════════════
-   #app-wrap: 실제 앱 컨테이너
-   - 모바일: 뷰포트 100% 꽉 채움
-   - PC(520px↑): 중앙 480px
-   - 내부를 flex column으로
+   #app-wrap: 항상 화면 전체 (좌우 100%)
+   PC/모바일 구분 없이 뷰포트 꽉 채움
    ════════════════════════════════════ */
 #app-wrap{
   position:fixed;
-  top:0; bottom:0;
-  /* 모바일: 양쪽 끝까지 */
-  left:0; right:0;
+  top:0; left:0; right:0; bottom:0;
   width:100%;
+  height:100%;
   display:flex;
   flex-direction:column;
   overflow:hidden;
-}
-/* PC에서만 중앙 480px */
-@media screen and (min-width:520px){
-  #app-wrap{
-    left:50%;
-    transform:translateX(-50%);
-    width:480px;
-    right:auto;
-  }
+  background:var(--bg);
 }
 
 /* ── 헤더: flex-shrink:0 으로 상단 고정 ── */
@@ -431,16 +424,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 /* ── 로그인 화면: 뷰포트 전체를 덮음 ── */
 #login-screen{
-  position:fixed;           /* 뷰포트 기준 전체 덮기 */
+  position:fixed;
   top:0; left:0; right:0; bottom:0;
-  width:100vw;              /* 뷰포트 너비 100% */
-  height:100vh;
-  height:100dvh;
+  width:100%;
+  height:100%;
   background:var(--bg);
   z-index:9999;
   display:flex;
   flex-direction:column;
-  align-items:stretch;      /* 자식 좌우 꽉 채움 */
+  align-items:stretch;
   justify-content:center;
   padding:60px 20px;
   padding-top:calc(60px + env(safe-area-inset-top,0px));
