@@ -639,41 +639,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 /* 모바일(768px 미만)에서는 기존 크기 그대로 */
 
-/* ════════════════════════════════════════════════
-   🔡 보조 텍스트 강제 확대 (팀·Aver·역할·핸디 등)
-   app.js가 인라인으로 박아넣은 작은 글자(8~13px)를
-   이름 크기 수준으로 강제 확대하고 한 줄로 표시
-   ════════════════════════════════════════════════ */
-[style*="font-size:8px"], [style*="font-size: 8px"],
-[style*="font-size:9px"], [style*="font-size: 9px"],
-[style*="font-size:10px"],[style*="font-size: 10px"],
-[style*="font-size:11px"],[style*="font-size: 11px"],
-[style*="font-size:12px"],[style*="font-size: 12px"],
-[style*="font-size:13px"],[style*="font-size: 13px"]{
-  font-size:16px !important;
-  white-space:nowrap !important;
-}
-/* 행(이름 옆) 영역은 줄바꿈 없이 가로 1줄, 넘치면 가로 스크롤 */
+/* ── 행(이름 옆) 영역: 줄바꿈 없이 가로 1줄, 넘치면 가로 스크롤 ── */
 .mr-info, .rk-info, .mr-chips, .sc-hdr{
   white-space:nowrap;
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
 }
 .mr-info > *, .rk-info > *, .mr-chips > *, .sc-hdr > *{ flex-shrink:0; }
-/* 헤더의 사용자 이름은 과확대 방지 */
-#hdr-user, #hdr-user *{ font-size:13px !important; }
-
-@media screen and (min-width:768px){
-  [style*="font-size:8px"], [style*="font-size: 8px"],
-  [style*="font-size:9px"], [style*="font-size: 9px"],
-  [style*="font-size:10px"],[style*="font-size: 10px"],
-  [style*="font-size:11px"],[style*="font-size: 11px"],
-  [style*="font-size:12px"],[style*="font-size: 12px"],
-  [style*="font-size:13px"],[style*="font-size: 13px"]{
-    font-size:19px !important;
-  }
-  #hdr-user, #hdr-user *{ font-size:18px !important; }
-}
 </style>
 </head>
 <body>

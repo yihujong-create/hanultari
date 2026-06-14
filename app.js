@@ -638,10 +638,10 @@ function renderDashboard(){
       <span class="mr-idx">${isAbs?'—':idx}</span>
       <span class="mr-nm">${m.nm}</span>
       <div class="mr-info">
-        <div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:5px;flex-wrap:nowrap;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch">
           <span class="gb ${gradeCls(calcGrade(averOf(m)))}">${calcGrade(averOf(m))}조</span>${roleH}
-          <span style="font-size:9px;color:var(--txt2)">${teamOf(m)?teamOf(m)+'팀':'팀없음'}</span>
-          ${hcp>0?`<span style="font-size:8px;background:#1a0d2b;color:var(--pur);border-radius:3px;padding:1px 4px;font-weight:700">H+${hcp}</span>`:''}
+          <span style="font-size:15px;color:var(--txt2);white-space:nowrap">${teamOf(m)?teamOf(m)+'팀':'팀없음'}</span>
+          ${hcp>0?`<span style="font-size:13px;background:#1a0d2b;color:var(--pur);border-radius:3px;padding:1px 5px;font-weight:700;white-space:nowrap">H+${hcp}</span>`:''}
         </div>
         ${isAbs?'<div style="font-size:9px;color:var(--txt2);margin-top:2px">결석</div>':`<div class="mr-chips">${valid.map(s=>{
           const isHi=s>=200;
@@ -832,15 +832,15 @@ function scoreCard(m,gc){
     <div class="sc-hdr">
       <span class="sc-nm">${m.nm}</span>
       <select onchange="setTeamByName('${m.nm}',this.value)" title="팀 지정"
-        style="background:${teamBg(mteam)};border:1px solid ${teamColor(mteam)};border-radius:5px;color:${teamColor(mteam)};font-size:11px;font-weight:700;padding:2px 4px;font-family:inherit;outline:none">
+        style="background:${teamBg(mteam)};border:1px solid ${teamColor(mteam)};border-radius:5px;color:${teamColor(mteam)};font-size:15px;font-weight:700;padding:4px 8px;font-family:inherit;outline:none">
         <option value="" ${!mteam?'selected':''}>팀없음</option>
         ${['A','B','C','D'].map(t=>`<option value="${t}" ${mteam===t?'selected':''}>${t}팀</option>`).join('')}
       </select>
       <span class="gb ${gradeCls(mgrp)}">${mgrp}조</span>${roleH}
-      <span style="display:inline-flex;align-items:center;gap:3px;font-size:9px;color:var(--pur)">핸디
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:15px;color:var(--pur);white-space:nowrap">핸디
         <input type="number" inputmode="numeric" value="${hcp}" min="0" max="100"
           onfocus="this.select()" onchange="setHcpByName('${m.nm}',this.value)" title="핸디 점수(게임당)"
-          style="width:42px;background:var(--s3);border:1px solid rgba(167,139,250,.5);border-radius:5px;color:var(--pur);font-weight:700;font-size:12px;text-align:center;padding:2px;font-family:inherit;outline:none">
+          style="width:50px;background:var(--s3);border:1px solid rgba(167,139,250,.5);border-radius:5px;color:var(--pur);font-weight:700;font-size:15px;text-align:center;padding:4px;font-family:inherit;outline:none">
       </span>
       <div class="abs-tog ${isAbs?'absent':''}" onclick="toggleAbs('${m.nm}')">${isAbs?'결석 ●':'결석 ○'}</div>
     </div>`;
@@ -875,7 +875,7 @@ function scoreCard(m,gc){
       <span style="display:inline-flex;align-items:center;gap:4px">Aver
         <input type="number" inputmode="numeric" value="${mav}" min="0" max="300"
           onfocus="this.select()" onchange="setAverByName('${m.nm}',this.value)"
-          style="width:50px;background:var(--s3);border:1px solid var(--blu);border-radius:5px;color:var(--blu);font-weight:700;font-size:13px;text-align:center;padding:3px 2px;font-family:inherit;outline:none">
+          style="width:58px;background:var(--s3);border:1px solid var(--blu);border-radius:5px;color:var(--blu);font-weight:700;font-size:15px;text-align:center;padding:4px 2px;font-family:inherit;outline:none">
       </span>
       <span style="color:${diff>=0?'var(--grn)':'var(--red)'};font-weight:700">${diff>=0?'+':''}${diff}</span>
     </div>`;
@@ -1003,7 +1003,7 @@ function _refreshScoreSum(nm){
         <span style="display:inline-flex;align-items:center;gap:4px">Aver
           <input type="number" inputmode="numeric" value="${mav}" min="0" max="300"
             onfocus="this.select()" onchange="setAverByName('${nm}',this.value)"
-            style="width:50px;background:var(--s3);border:1px solid var(--blu);border-radius:5px;color:var(--blu);font-weight:700;font-size:13px;text-align:center;padding:3px 2px;font-family:inherit;outline:none">
+            style="width:58px;background:var(--s3);border:1px solid var(--blu);border-radius:5px;color:var(--blu);font-weight:700;font-size:15px;text-align:center;padding:4px 2px;font-family:inherit;outline:none">
         </span>
         <span style="color:${diff>=0?'var(--grn)':'var(--red)'};font-weight:700">${diff>=0?'+':''}${diff}</span>`;
       // 벌금 재계산
@@ -1312,7 +1312,7 @@ function renderRank(){
       <div class="rk-n ${cls}">${md}</div>
       <span class="rk-nm">${m.nm}</span>
       <div class="rk-info">
-        <div style="display:flex;gap:3px;flex-wrap:wrap"><span class="gb ${gradeCls(calcGrade(averOf(m)))}">${calcGrade(averOf(m))}조</span>${roleH}<span style="font-size:9px;color:var(--txt2)">${teamOf(m)?teamOf(m)+'팀':'팀없음'}</span>${m.hcp>0?`<span style="font-size:8px;color:var(--pur)"> H+${m.hcp}</span>`:''}</div>
+        <div style="display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch"><span class="gb ${gradeCls(calcGrade(averOf(m)))}">${calcGrade(averOf(m))}조</span>${roleH}<span style="font-size:15px;color:var(--txt2);white-space:nowrap">${teamOf(m)?teamOf(m)+'팀':'팀없음'}</span>${m.hcp>0?`<span style="font-size:13px;color:var(--pur);white-space:nowrap"> H+${m.hcp}</span>`:''}</div>
         <div class="rk-sub">${m.scores.join('/')}${m.hcp>0?` → ${m.scores.map(s=>s+m.hcp).join('/')}`:''}</div>
       </div>
       <div class="rk-r">
@@ -1376,7 +1376,7 @@ function histCurrent(){
     html+=`<div class="mr t${teamCls(teamOf(m))}">
       <span class="mr-idx">${i+1}</span><span class="mr-nm">${m.nm}</span>
       <div class="mr-info">
-        <div style="display:flex;gap:3px;flex-wrap:wrap"><span class="gb ${gradeCls(calcGrade(averOf(m)))}">${calcGrade(averOf(m))}조</span>${roleH}<span style="font-size:9px;color:var(--txt2)">${teamOf(m)?teamOf(m)+'팀':'팀없음'} | Aver ${averOf(m)}</span>${hcp>0?`<span style="font-size:8px;color:var(--pur)">H+${hcp}</span>`:''}</div>
+        <div style="display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch"><span class="gb ${gradeCls(calcGrade(averOf(m)))}">${calcGrade(averOf(m))}조</span>${roleH}<span style="font-size:15px;color:var(--txt2);white-space:nowrap">${teamOf(m)?teamOf(m)+'팀':'팀없음'} | Aver ${averOf(m)}</span>${hcp>0?`<span style="font-size:13px;color:var(--pur);white-space:nowrap">H+${hcp}</span>`:''}</div>
         ${sc.length?`<div class="mr-chips">${sc.map((s,i)=>`<span class="gchip ${s>=200?'hi':''}">${s}${hcp>0?`<span style="color:var(--pur);font-size:7px">→${s+hcp}</span>`:''}</span>`).join('')}</div>`:'<div style="font-size:9px;color:var(--txt2)">결석</div>'}
       </div>
       <div class="mr-score">${sc.length?`<div class="mr-avg">${av}</div><div class="mr-total">${t}점${hcp>0?`<div style="color:var(--pur);font-size:9px">핸디:${tH}</div>`:''}</div>`:'<div style="color:var(--txt2);font-size:11px">결석</div>'}</div>
@@ -1584,7 +1584,7 @@ window.deleteHistory=function(hi){
 // =================================================================
 // ⑥ 장부
 // =================================================================
-let cashTab='cash';
+let cashTab='all';
 let finTab='current';
 
 function ensureQuarters(){
@@ -1638,58 +1638,58 @@ function renderFinance(){
     <!-- 현금/통장 요약 카드 (이전잔고 + 수입 - 지출 = 현재잔고) -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
       <div class="card" style="margin-bottom:0;padding:10px">
-        <div style="font-size:10px;font-weight:700;color:var(--grn);margin-bottom:7px">💵 현금</div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+        <div style="font-size:14px;font-weight:700;color:var(--grn);margin-bottom:7px">💵 현금</div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px">
           <span style="color:var(--txt2)">이전 잔고</span>
           <span style="font-weight:700;color:var(--txt)">₩${fmt(f.prevCash)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px">
           <span style="color:var(--txt2)">+ 수입</span>
           <span style="color:var(--grn);font-weight:700">+₩${fmt(iC)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px">
           <span style="color:var(--txt2)">- 지출</span>
           <span style="color:var(--red);font-weight:700">-₩${fmt(eC)}</span>
         </div>
         <div style="height:1px;background:var(--bdr);margin-bottom:5px"></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:900">
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900">
           <span style="color:var(--txt2)">현재 잔고</span>
           <span style="color:var(--blu)">₩${fmt(cC)}</span>
         </div>
-        <div style="font-size:9px;text-align:right;margin-top:2px;color:${iC-eC>=0?'var(--grn)':'var(--red)'}">
+        <div style="font-size:13px;text-align:right;margin-top:2px;color:${iC-eC>=0?'var(--grn)':'var(--red)'}">
           ${iC-eC>=0?'▲ +':'▼ '}₩${fmt(Math.abs(iC-eC))} 증감
         </div>
       </div>
       <div class="card" style="margin-bottom:0;padding:10px">
-        <div style="font-size:10px;font-weight:700;color:var(--blu);margin-bottom:7px">🏦 통장</div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+        <div style="font-size:14px;font-weight:700;color:var(--blu);margin-bottom:7px">🏦 통장</div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px">
           <span style="color:var(--txt2)">이전 잔고</span>
           <span style="font-weight:700;color:var(--txt)">₩${fmt(f.prevBank)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px">
           <span style="color:var(--txt2)">+ 수입</span>
           <span style="color:var(--grn);font-weight:700">+₩${fmt(iB)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px">
           <span style="color:var(--txt2)">- 지출</span>
           <span style="color:var(--red);font-weight:700">-₩${fmt(eB)}</span>
         </div>
         <div style="height:1px;background:var(--bdr);margin-bottom:5px"></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:900">
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900">
           <span style="color:var(--txt2)">현재 잔고</span>
           <span style="color:var(--blu)">₩${fmt(cB)}</span>
         </div>
-        <div style="font-size:9px;text-align:right;margin-top:2px;color:${iB-eB>=0?'var(--grn)':'var(--red)'}">
+        <div style="font-size:13px;text-align:right;margin-top:2px;color:${iB-eB>=0?'var(--grn)':'var(--red)'}">
           ${iB-eB>=0?'▲ +':'▼ '}₩${fmt(Math.abs(iB-eB))} 증감
         </div>
       </div>
     </div>
     <div class="card" style="margin-bottom:10px;padding:10px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:12px;font-weight:700;color:var(--txt2)">💰 총 잔고</span>
+        <span style="font-size:15px;font-weight:700;color:var(--txt2)">💰 총 잔고</span>
         <span style="font-size:20px;font-weight:900;color:var(--blu)">₩${fmt(total)}</span>
       </div>
-      <div style="font-size:9px;color:var(--txt2);text-align:right">이전 ₩${fmt(f.prevCash+f.prevBank)} → 증감 <span style="color:${iC+iB-eC-eB>=0?'var(--grn)':'var(--red)'};font-weight:700">${iC+iB-eC-eB>=0?'+':''}₩${fmt(iC+iB-eC-eB)}</span></div>
+      <div style="font-size:13px;color:var(--txt2);text-align:right">이전 ₩${fmt(f.prevCash+f.prevBank)} → 증감 <span style="color:${iC+iB-eC-eB>=0?'var(--grn)':'var(--red)'};font-weight:700">${iC+iB-eC-eB>=0?'+':''}₩${fmt(iC+iB-eC-eB)}</span></div>
     </div>
     <div class="cb-sel" style="margin-bottom:10px;gap:5px">
       <button class="cb-btn ${cashTab==='cash'?'on':'off'}" onclick="cashTab='cash';renderFinance()">💵 현금</button>
@@ -1699,20 +1699,20 @@ function renderFinance(){
     <div class="sl">수입</div><div class="card">`;
 
     const vi=f.income.filter(filter);
-    if(!vi.length) html+=`<div style="text-align:center;color:var(--txt2);font-size:11px;padding:8px">수입 내역 없음</div>`;
+    if(!vi.length) html+=`<div style="text-align:center;color:var(--txt2);font-size:14px;padding:8px">수입 내역 없음</div>`;
     else vi.forEach(it=>{ const i=f.income.indexOf(it); html+=itemRow(it,i,'income'); });
     // 총 수입 — 현금/통장 구분
     const totIncC=f.income.filter(x=>x.type==='cash').reduce((a,b)=>a+b.amt,0);
     const totIncB=f.income.filter(x=>x.type==='bank').reduce((a,b)=>a+b.amt,0);
     if(vi.length) html+=`
       <div style="border-top:1px solid var(--bdr);margin-top:6px;padding-top:6px">
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px">
           <span style="color:var(--txt2)">💵 현금 수입</span><span style="color:var(--grn);font-weight:700">₩${fmt(totIncC)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px">
           <span style="color:var(--txt2)">🏦 통장 수입</span><span style="color:var(--grn);font-weight:700">₩${fmt(totIncB)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:900;padding-top:4px;border-top:1px solid var(--bdr)">
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;padding-top:4px;border-top:1px solid var(--bdr)">
           <span style="color:var(--txt2)">총 수입</span><span style="color:var(--grn)">₩${fmt(totIncC+totIncB)}</span>
         </div>
       </div>`;
@@ -1729,20 +1729,20 @@ function renderFinance(){
     <div class="sl">지출</div><div class="card">`;
 
     const ve=f.expense.filter(filter);
-    if(!ve.length) html+=`<div style="text-align:center;color:var(--txt2);font-size:11px;padding:8px">지출 내역 없음</div>`;
+    if(!ve.length) html+=`<div style="text-align:center;color:var(--txt2);font-size:14px;padding:8px">지출 내역 없음</div>`;
     else ve.forEach(it=>{ const i=f.expense.indexOf(it); html+=itemRow(it,i,'expense'); });
     // 총 지출 — 현금/통장 구분
     const totExpC=f.expense.filter(x=>x.type==='cash').reduce((a,b)=>a+b.amt,0);
     const totExpB=f.expense.filter(x=>x.type==='bank').reduce((a,b)=>a+b.amt,0);
     if(ve.length) html+=`
       <div style="border-top:1px solid var(--bdr);margin-top:6px;padding-top:6px">
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px">
           <span style="color:var(--txt2)">💵 현금 지출</span><span style="color:var(--red);font-weight:700">₩${fmt(totExpC)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px">
           <span style="color:var(--txt2)">🏦 통장 지출</span><span style="color:var(--red);font-weight:700">₩${fmt(totExpB)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:900;padding-top:4px;border-top:1px solid var(--bdr)">
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;padding-top:4px;border-top:1px solid var(--bdr)">
           <span style="color:var(--txt2)">총 지출</span><span style="color:var(--red)">₩${fmt(totExpC+totExpB)}</span>
         </div>
       </div>`;
@@ -1756,17 +1756,17 @@ function renderFinance(){
       </div>
       <button class="add-btn exp" onclick="addFin('expense')">＋</button>
     </div>
-    <div class="sl">이전 잔고 <span style="font-size:9px;font-weight:400;letter-spacing:0;color:var(--pur)">🔒 관리자 수정</span></div>
+    <div class="sl">이전 잔고 <span style="font-size:13px;font-weight:400;letter-spacing:0;color:var(--pur)">🔒 관리자 수정</span></div>
     <div class="card">
-      <div class="fr"><span class="fr-l" style="color:#fff;font-weight:700">💵 현금</span><span class="fr-v" style="color:var(--blu)">₩${fmt(f.prevCash)}</span><span style="font-size:10px;color:var(--pur);cursor:pointer;padding:2px 6px;background:var(--s3);border-radius:4px" onclick="checkAdmin(()=>editPrev('cash'))">✏️ 수정</span></div>
-      <div class="fr"><span class="fr-l" style="color:#fff;font-weight:700">🏦 통장</span><span class="fr-v" style="color:var(--blu)">₩${fmt(f.prevBank)}</span><span style="font-size:10px;color:var(--pur);cursor:pointer;padding:2px 6px;background:var(--s3);border-radius:4px" onclick="checkAdmin(()=>editPrev('bank'))">✏️ 수정</span></div>
+      <div class="fr"><span class="fr-l" style="color:#fff;font-weight:700">💵 현금</span><span class="fr-v" style="color:var(--blu)">₩${fmt(f.prevCash)}</span><span style="font-size:14px;color:var(--pur);cursor:pointer;padding:2px 6px;background:var(--s3);border-radius:4px" onclick="checkAdmin(()=>editPrev('cash'))">✏️ 수정</span></div>
+      <div class="fr"><span class="fr-l" style="color:#fff;font-weight:700">🏦 통장</span><span class="fr-v" style="color:var(--blu)">₩${fmt(f.prevBank)}</span><span style="font-size:14px;color:var(--pur);cursor:pointer;padding:2px 6px;background:var(--s3);border-radius:4px" onclick="checkAdmin(()=>editPrev('bank'))">✏️ 수정</span></div>
     </div>
-    <div class="sl">현재 잔고 <span style="font-size:9px;font-weight:400;letter-spacing:0;color:var(--txt2)">자동 계산</span></div>
+    <div class="sl">현재 잔고 <span style="font-size:13px;font-weight:400;letter-spacing:0;color:var(--txt2)">자동 계산</span></div>
     <div class="card">
       <div class="fr"><span class="fr-l" style="color:#fff;font-weight:700">💵 현금</span><span class="fr-v bal">₩${fmt(cC)}</span></div>
       <div class="fr"><span class="fr-l" style="color:#fff;font-weight:700">🏦 통장</span><span class="fr-v bal">₩${fmt(cB)}</span></div>
       <div style="height:1px;background:var(--bdr);margin:8px 0"></div>
-      <div style="display:flex;justify-content:space-between;padding-top:2px"><span style="font-size:14px;font-weight:700;color:#fff">합계</span><span style="font-size:20px;font-weight:900;color:var(--blu)">₩${fmt(total)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding-top:2px"><span style="font-size:17px;font-weight:700;color:#fff">합계</span><span style="font-size:20px;font-weight:900;color:var(--blu)">₩${fmt(total)}</span></div>
     </div>`;
   } else {
     const q=parseInt(finTab.replace('q',''));
@@ -1818,7 +1818,7 @@ function renderQuarterTab(q){
   const qd=DB.finance.quarters[q];
   const mNums=Q_MONTHS[q];
   let html=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-    <span style="font-size:13px;font-weight:700;color:var(--ora)">📊 ${Q_LABEL[q]}</span>
+    <span style="font-size:16px;font-weight:700;color:var(--ora)">📊 ${Q_LABEL[q]}</span>
   </div>`;
 
   let qTotInCash=0,qTotInBank=0,qTotExCash=0,qTotExBank=0;
@@ -1851,71 +1851,71 @@ function renderQuarterTab(q){
 
     html+=`<div class="card" style="margin-bottom:8px;border-color:rgba(167,139,250,.25)">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:13px;font-weight:700;color:var(--pur)">${mn}월</span>
-        <div style="display:flex;gap:8px;font-size:10px">
+        <span style="font-size:16px;font-weight:700;color:var(--pur)">${mn}월</span>
+        <div style="display:flex;gap:8px;font-size:14px">
           <span style="color:var(--grn)">수입 ₩${fmt(iC+iB)}</span>
           <span style="color:var(--red)">지출 ₩${fmt(eC+eB)}</span>
         </div>
       </div>
 
       <!-- 수입 -->
-      <div style="font-size:10px;font-weight:700;color:var(--grn);margin-bottom:3px">▸ 수입</div>
+      <div style="font-size:14px;font-weight:700;color:var(--grn);margin-bottom:3px">▸ 수입</div>
       ${md.income.length
         ? md.income.map((it,i)=>`<div class="fr" style="padding:3px 0">
-            <span class="fr-l" style="font-size:10px">${it.type==='cash'?'💵':'🏦'} ${it.desc}</span>
-            <span style="font-size:10px;font-weight:700;color:var(--grn)">₩${fmt(it.amt)}</span>
+            <span class="fr-l" style="font-size:14px">${it.type==='cash'?'💵':'🏦'} ${it.desc}</span>
+            <span style="font-size:14px;font-weight:700;color:var(--grn)">₩${fmt(it.amt)}</span>
             <span class="fr-del" onclick="rmQFin(${q},${mkey},'income',${i})">✕</span>
           </div>`).join('')
-        : '<div style="font-size:10px;color:var(--txt2);padding:2px 0">내역 없음</div>'}
+        : '<div style="font-size:14px;color:var(--txt2);padding:2px 0">내역 없음</div>'}
       ${iC+iB>0?`
       <div style="border-top:1px solid var(--bdr);margin-top:5px;padding-top:5px">
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px">
           <span style="color:var(--txt2)">💵 현금</span><span style="color:var(--grn);font-weight:700">₩${fmt(iC)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px">
           <span style="color:var(--txt2)">🏦 통장</span><span style="color:var(--grn);font-weight:700">₩${fmt(iB)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:900">
+        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:900">
           <span style="color:var(--txt2)">총 수입</span><span style="color:var(--grn)">₩${fmt(iC+iB)}</span>
         </div>
       </div>`:''}
       <div class="add-row" style="margin:5px 0 8px">
-        <input class="add-inp nm" id="qi_d_${q}_${mkey}" placeholder="${mn}월 수입..." style="font-size:11px;padding:5px 8px">
-        <input class="add-inp amt" id="qi_a_${q}_${mkey}" placeholder="금액" type="number" inputmode="numeric" style="width:70px;font-size:11px;padding:5px 6px">
+        <input class="add-inp nm" id="qi_d_${q}_${mkey}" placeholder="${mn}월 수입..." style="font-size:14px;padding:5px 8px">
+        <input class="add-inp amt" id="qi_a_${q}_${mkey}" placeholder="금액" type="number" inputmode="numeric" style="width:70px;font-size:14px;padding:5px 6px">
         <div class="cb-sel">
-          <button class="cb-btn on" id="qi_tc_${q}_${mkey}" onclick="setQIT(${q},${mkey},'cash')" style="padding:4px 7px;font-size:9px">현금</button>
-          <button class="cb-btn off" id="qi_tb_${q}_${mkey}" onclick="setQIT(${q},${mkey},'bank')" style="padding:4px 7px;font-size:9px">통장</button>
+          <button class="cb-btn on" id="qi_tc_${q}_${mkey}" onclick="setQIT(${q},${mkey},'cash')" style="padding:4px 7px;font-size:13px">현금</button>
+          <button class="cb-btn off" id="qi_tb_${q}_${mkey}" onclick="setQIT(${q},${mkey},'bank')" style="padding:4px 7px;font-size:13px">통장</button>
         </div>
         <button class="add-btn inc" onclick="addQFin(${q},${mkey},'income')" style="padding:5px 9px">＋</button>
       </div>
 
       <!-- 지출 -->
-      <div style="font-size:10px;font-weight:700;color:var(--red);margin-bottom:3px">▸ 지출</div>
+      <div style="font-size:14px;font-weight:700;color:var(--red);margin-bottom:3px">▸ 지출</div>
       ${md.expense.length
         ? md.expense.map((it,i)=>`<div class="fr" style="padding:3px 0">
-            <span class="fr-l" style="font-size:10px">${it.type==='cash'?'💵':'🏦'} ${it.desc}</span>
-            <span style="font-size:10px;font-weight:700;color:var(--red)">₩${fmt(it.amt)}</span>
+            <span class="fr-l" style="font-size:14px">${it.type==='cash'?'💵':'🏦'} ${it.desc}</span>
+            <span style="font-size:14px;font-weight:700;color:var(--red)">₩${fmt(it.amt)}</span>
             <span class="fr-del" onclick="rmQFin(${q},${mkey},'expense',${i})">✕</span>
           </div>`).join('')
-        : '<div style="font-size:10px;color:var(--txt2);padding:2px 0">내역 없음</div>'}
+        : '<div style="font-size:14px;color:var(--txt2);padding:2px 0">내역 없음</div>'}
       ${eC+eB>0?`
       <div style="border-top:1px solid var(--bdr);margin-top:5px;padding-top:5px">
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px">
           <span style="color:var(--txt2)">💵 현금</span><span style="color:var(--red);font-weight:700">₩${fmt(eC)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px">
           <span style="color:var(--txt2)">🏦 통장</span><span style="color:var(--red);font-weight:700">₩${fmt(eB)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:900">
+        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:900">
           <span style="color:var(--txt2)">총 지출</span><span style="color:var(--red)">₩${fmt(eC+eB)}</span>
         </div>
       </div>`:''}
       <div class="add-row" style="margin:5px 0 8px">
-        <input class="add-inp nm" id="qe_d_${q}_${mkey}" placeholder="${mn}월 지출..." style="font-size:11px;padding:5px 8px">
-        <input class="add-inp amt" id="qe_a_${q}_${mkey}" placeholder="금액" type="number" inputmode="numeric" style="width:70px;font-size:11px;padding:5px 6px">
+        <input class="add-inp nm" id="qe_d_${q}_${mkey}" placeholder="${mn}월 지출..." style="font-size:14px;padding:5px 8px">
+        <input class="add-inp amt" id="qe_a_${q}_${mkey}" placeholder="금액" type="number" inputmode="numeric" style="width:70px;font-size:14px;padding:5px 6px">
         <div class="cb-sel">
-          <button class="cb-btn on" id="qe_tc_${q}_${mkey}" onclick="setQET(${q},${mkey},'cash')" style="padding:4px 7px;font-size:9px">현금</button>
-          <button class="cb-btn off" id="qe_tb_${q}_${mkey}" onclick="setQET(${q},${mkey},'bank')" style="padding:4px 7px;font-size:9px">통장</button>
+          <button class="cb-btn on" id="qe_tc_${q}_${mkey}" onclick="setQET(${q},${mkey},'cash')" style="padding:4px 7px;font-size:13px">현금</button>
+          <button class="cb-btn off" id="qe_tb_${q}_${mkey}" onclick="setQET(${q},${mkey},'bank')" style="padding:4px 7px;font-size:13px">통장</button>
         </div>
         <button class="add-btn exp" onclick="addQFin(${q},${mkey},'expense')" style="padding:5px 9px">＋</button>
       </div>
@@ -1924,19 +1924,19 @@ function renderQuarterTab(q){
       <div style="height:1px;background:var(--bdr);margin:4px 0 7px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
         <div style="background:var(--s3);border-radius:7px;padding:7px">
-          <div style="font-size:9px;color:var(--txt2);margin-bottom:4px">
+          <div style="font-size:13px;color:var(--txt2);margin-bottom:4px">
             이전 잔고${autoNote}
             ${mi===0?`<span style="cursor:pointer;color:var(--pur);margin-left:4px" onclick="editQPrev(${q},${mkey})">✏️</span>`:''}
           </div>
-          <div style="font-size:10px">💵 ₩${fmt(prevCash)}</div>
-          <div style="font-size:10px">🏦 ₩${fmt(prevBank)}</div>
-          <div style="font-size:11px;font-weight:700;color:var(--txt2);margin-top:3px">합 ₩${fmt(prevCash+prevBank)}</div>
+          <div style="font-size:14px">💵 ₩${fmt(prevCash)}</div>
+          <div style="font-size:14px">🏦 ₩${fmt(prevBank)}</div>
+          <div style="font-size:14px;font-weight:700;color:var(--txt2);margin-top:3px">합 ₩${fmt(prevCash+prevBank)}</div>
         </div>
         <div style="background:var(--s3);border-radius:7px;padding:7px">
-          <div style="font-size:9px;color:var(--txt2);margin-bottom:4px">현재 잔고 (자동계산)</div>
-          <div style="font-size:10px">💵 ₩${fmt(curCash)}</div>
-          <div style="font-size:10px">🏦 ₩${fmt(curBank)}</div>
-          <div style="font-size:11px;font-weight:700;color:var(--blu);margin-top:3px">합 ₩${fmt(curCash+curBank)}</div>
+          <div style="font-size:13px;color:var(--txt2);margin-bottom:4px">현재 잔고 (자동계산)</div>
+          <div style="font-size:14px">💵 ₩${fmt(curCash)}</div>
+          <div style="font-size:14px">🏦 ₩${fmt(curBank)}</div>
+          <div style="font-size:14px;font-weight:700;color:var(--blu);margin-top:3px">합 ₩${fmt(curCash+curBank)}</div>
         </div>
       </div>
     </div>`;
@@ -1947,31 +1947,31 @@ function renderQuarterTab(q){
   const qTotEx=qTotExCash+qTotExBank;
   const lastResult=monthResults[2]||{curCash:0,curBank:0};
   html+=`<div style="background:linear-gradient(135deg,#1a0d2b,#0d1e33);border:1px solid var(--pur);border-radius:12px;padding:14px;margin-top:4px">
-    <div style="font-size:12px;font-weight:700;color:var(--pur);margin-bottom:10px">📈 ${Q_LABEL[q]} 결과</div>
+    <div style="font-size:15px;font-weight:700;color:var(--pur);margin-bottom:10px">📈 ${Q_LABEL[q]} 결과</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
       <div style="background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);border-radius:8px;padding:10px">
-        <div style="font-size:9px;color:var(--txt2);margin-bottom:5px;font-weight:700">총 수입</div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px"><span style="color:var(--txt2)">💵 현금</span><span style="color:var(--grn);font-weight:700">₩${fmt(qTotInCash)}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span style="color:var(--txt2)">🏦 통장</span><span style="color:var(--grn);font-weight:700">₩${fmt(qTotInBank)}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:900;border-top:1px solid rgba(46,204,113,.3);padding-top:5px"><span style="color:var(--txt2)">합계</span><span style="color:var(--grn)">₩${fmt(qTotIn)}</span></div>
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:5px;font-weight:700">총 수입</div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px"><span style="color:var(--txt2)">💵 현금</span><span style="color:var(--grn);font-weight:700">₩${fmt(qTotInCash)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><span style="color:var(--txt2)">🏦 통장</span><span style="color:var(--grn);font-weight:700">₩${fmt(qTotInBank)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;border-top:1px solid rgba(46,204,113,.3);padding-top:5px"><span style="color:var(--txt2)">합계</span><span style="color:var(--grn)">₩${fmt(qTotIn)}</span></div>
       </div>
       <div style="background:rgba(232,73,73,.1);border:1px solid rgba(232,73,73,.3);border-radius:8px;padding:10px">
-        <div style="font-size:9px;color:var(--txt2);margin-bottom:5px;font-weight:700">총 지출</div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px"><span style="color:var(--txt2)">💵 현금</span><span style="color:var(--red);font-weight:700">₩${fmt(qTotExCash)}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span style="color:var(--txt2)">🏦 통장</span><span style="color:var(--red);font-weight:700">₩${fmt(qTotExBank)}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:900;border-top:1px solid rgba(232,73,73,.3);padding-top:5px"><span style="color:var(--txt2)">합계</span><span style="color:var(--red)">₩${fmt(qTotEx)}</span></div>
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:5px;font-weight:700">총 지출</div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px"><span style="color:var(--txt2)">💵 현금</span><span style="color:var(--red);font-weight:700">₩${fmt(qTotExCash)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><span style="color:var(--txt2)">🏦 통장</span><span style="color:var(--red);font-weight:700">₩${fmt(qTotExBank)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;border-top:1px solid rgba(232,73,73,.3);padding-top:5px"><span style="color:var(--txt2)">합계</span><span style="color:var(--red)">₩${fmt(qTotEx)}</span></div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div style="background:rgba(77,166,255,.1);border:1px solid rgba(77,166,255,.3);border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:9px;color:var(--txt2);margin-bottom:4px">분기 수지</div>
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:4px">분기 수지</div>
         <div style="font-size:16px;font-weight:900;color:${qTotIn-qTotEx>=0?'var(--grn)':'var(--red)'}">${qTotIn-qTotEx>=0?'+':''}₩${fmt(qTotIn-qTotEx)}</div>
       </div>
       <div style="background:rgba(77,166,255,.1);border:1px solid rgba(77,166,255,.3);border-radius:8px;padding:10px">
-        <div style="font-size:9px;color:var(--txt2);margin-bottom:5px">분기말 잔고</div>
-        <div style="font-size:10px">💵 ₩${fmt(lastResult.curCash)}</div>
-        <div style="font-size:10px">🏦 ₩${fmt(lastResult.curBank)}</div>
-        <div style="font-size:12px;font-weight:900;color:var(--blu);margin-top:3px">합 ₩${fmt(lastResult.curCash+lastResult.curBank)}</div>
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:5px">분기말 잔고</div>
+        <div style="font-size:14px">💵 ₩${fmt(lastResult.curCash)}</div>
+        <div style="font-size:14px">🏦 ₩${fmt(lastResult.curBank)}</div>
+        <div style="font-size:15px;font-weight:900;color:var(--blu);margin-top:3px">합 ₩${fmt(lastResult.curCash+lastResult.curBank)}</div>
       </div>
     </div>
   </div>`;
@@ -2024,18 +2024,18 @@ window.printQuarter=function(q){
     const curCash=md.prevCash+iC-eC, curBank=md.prevBank+iB-eB;
     qTotInCash+=iC; qTotInBank+=iB; qTotExCash+=eC; qTotExBank+=eB;
     body+=`<div style="border:1px solid #ccc;border-radius:8px;padding:12px;margin-bottom:10px">
-      <h3 style="margin:0 0 8px;font-size:14px;border-bottom:1px solid #eee;padding-bottom:5px">${mn}월</h3>
+      <h3 style="margin:0 0 8px;font-size:17px;border-bottom:1px solid #eee;padding-bottom:5px">${mn}월</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
-        <div><b style="color:#060;font-size:11px">▸ 수입</b><br>
-          ${md.income.map(it=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0">${it.type==='cash'?'💵':'🏦'} ${it.desc} <b style="color:#060">₩${fmt(it.amt)}</b></div>`).join('')||'<span style="color:#999;font-size:11px">없음</span>'}
-          <div style="border-top:1px solid #ddd;margin-top:4px;padding-top:3px;font-size:11px"><b>소계: ₩${fmt(iC+iB)}</b></div>
+        <div><b style="color:#060;font-size:14px">▸ 수입</b><br>
+          ${md.income.map(it=>`<div style="display:flex;justify-content:space-between;font-size:14px;padding:2px 0">${it.type==='cash'?'💵':'🏦'} ${it.desc} <b style="color:#060">₩${fmt(it.amt)}</b></div>`).join('')||'<span style="color:#999;font-size:14px">없음</span>'}
+          <div style="border-top:1px solid #ddd;margin-top:4px;padding-top:3px;font-size:14px"><b>소계: ₩${fmt(iC+iB)}</b></div>
         </div>
-        <div><b style="color:#c00;font-size:11px">▸ 지출</b><br>
-          ${md.expense.map(it=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0">${it.type==='cash'?'💵':'🏦'} ${it.desc} <b style="color:#c00">₩${fmt(it.amt)}</b></div>`).join('')||'<span style="color:#999;font-size:11px">없음</span>'}
-          <div style="border-top:1px solid #ddd;margin-top:4px;padding-top:3px;font-size:11px"><b>소계: ₩${fmt(eC+eB)}</b></div>
+        <div><b style="color:#c00;font-size:14px">▸ 지출</b><br>
+          ${md.expense.map(it=>`<div style="display:flex;justify-content:space-between;font-size:14px;padding:2px 0">${it.type==='cash'?'💵':'🏦'} ${it.desc} <b style="color:#c00">₩${fmt(it.amt)}</b></div>`).join('')||'<span style="color:#999;font-size:14px">없음</span>'}
+          <div style="border-top:1px solid #ddd;margin-top:4px;padding-top:3px;font-size:14px"><b>소계: ₩${fmt(eC+eB)}</b></div>
         </div>
       </div>
-      <div style="background:#f5f5f5;border-radius:6px;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px">
+      <div style="background:#f5f5f5;border-radius:6px;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:14px">
         <div><b>이전 잔고</b><br>💵 ₩${fmt(md.prevCash)}<br>🏦 ₩${fmt(md.prevBank)}<br><b>합 ₩${fmt(md.prevCash+md.prevBank)}</b></div>
         <div><b>현재 잔고</b><br>💵 ₩${fmt(curCash)}<br>🏦 ₩${fmt(curBank)}<br><b style="color:#00c">합 ₩${fmt(curCash+curBank)}</b></div>
       </div>
@@ -2045,15 +2045,15 @@ window.printQuarter=function(q){
   body+=`<div style="border:2px solid #609;border-radius:10px;padding:14px;background:#f8f5ff">
     <h3 style="color:#609;margin:0 0 10px">📈 ${Q_LABEL[q]} 결과</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center">
-      <div style="background:#fff;border-radius:6px;padding:10px;border:1px solid #ddd"><div style="font-size:10px;color:#666">총 수입</div><div style="font-size:16px;font-weight:700;color:#060">₩${fmt(qTotIn)}</div><div style="font-size:9px;color:#999">💵${fmt(qTotInCash)} / 🏦${fmt(qTotInBank)}</div></div>
-      <div style="background:#fff;border-radius:6px;padding:10px;border:1px solid #ddd"><div style="font-size:10px;color:#666">총 지출</div><div style="font-size:16px;font-weight:700;color:#c00">₩${fmt(qTotEx)}</div><div style="font-size:9px;color:#999">💵${fmt(qTotExCash)} / 🏦${fmt(qTotExBank)}</div></div>
-      <div style="background:#fff;border-radius:6px;padding:10px;border:1px solid #ddd"><div style="font-size:10px;color:#666">수지</div><div style="font-size:16px;font-weight:700;color:${qTotIn-qTotEx>=0?'#060':'#c00'}">${qTotIn-qTotEx>=0?'+':''}₩${fmt(qTotIn-qTotEx)}</div></div>
+      <div style="background:#fff;border-radius:6px;padding:10px;border:1px solid #ddd"><div style="font-size:14px;color:#666">총 수입</div><div style="font-size:16px;font-weight:700;color:#060">₩${fmt(qTotIn)}</div><div style="font-size:13px;color:#999">💵${fmt(qTotInCash)} / 🏦${fmt(qTotInBank)}</div></div>
+      <div style="background:#fff;border-radius:6px;padding:10px;border:1px solid #ddd"><div style="font-size:14px;color:#666">총 지출</div><div style="font-size:16px;font-weight:700;color:#c00">₩${fmt(qTotEx)}</div><div style="font-size:13px;color:#999">💵${fmt(qTotExCash)} / 🏦${fmt(qTotExBank)}</div></div>
+      <div style="background:#fff;border-radius:6px;padding:10px;border:1px solid #ddd"><div style="font-size:14px;color:#666">수지</div><div style="font-size:16px;font-weight:700;color:${qTotIn-qTotEx>=0?'#060':'#c00'}">${qTotIn-qTotEx>=0?'+':''}₩${fmt(qTotIn-qTotEx)}</div></div>
     </div>
   </div></div>`;
   const w=window.open('','_blank','width=800,height=900');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>장부 ${Q_LABEL[q]}</title>
   <style>@media print{body{margin:0}}</style></head><body>${body}
-  <div style="text-align:center;margin:20px"><button onclick="window.print()" style="padding:10px 30px;font-size:14px;cursor:pointer">🖨️ 인쇄</button></div>
+  <div style="text-align:center;margin:20px"><button onclick="window.print()" style="padding:10px 30px;font-size:17px;cursor:pointer">🖨️ 인쇄</button></div>
   </body></html>`);
   w.document.close();
 };
