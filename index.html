@@ -488,6 +488,160 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 }
 .login-err{color:var(--red);font-size:14px;text-align:center;margin-top:16px;min-height:22px;}
 .login-hint{font-size:14px;color:var(--txt2);text-align:center;margin-top:24px;line-height:2;}
+
+/* ════════════════════════════════════════════════
+   📺 PC / 태블릿 확대 (768px 이상)
+   모든 텍스트·패딩·아이콘을 1.8배 확대
+   ════════════════════════════════════════════════ */
+@media screen and (min-width: 768px) {
+
+  /* 헤더 */
+  .hdr-logo { font-size: 32px; }
+  .hdr-meta { font-size: 16px; gap: 16px; margin-top: 8px; }
+  .hdr-meta span { font-size: 16px; }
+  header { padding: 16px 24px; padding-top: calc(16px + env(safe-area-inset-top,0px)); }
+  .hdr-sync { width: 44px; height: 44px; font-size: 22px; }
+  .hdr-badge { font-size: 15px; padding: 6px 18px; }
+  #hdr-user span { font-size: 15px !important; padding: 4px 14px !important; }
+
+  /* 배너 */
+  .banner { font-size: 15px; padding: 6px 16px; }
+
+  /* 탭바 */
+  .bn .ic { font-size: 28px; }
+  .bn .lb { font-size: 13px; }
+  .bn { padding: 12px 4px 10px; }
+
+  /* 공통 카드/섹션 */
+  .sl { font-size: 15px; letter-spacing: 3px; margin: 18px 0 10px; }
+  .card { padding: 18px; border-radius: 16px; margin-bottom: 14px; }
+  .card-t { font-size: 16px; margin-bottom: 12px; }
+  .sbox { padding: 16px 8px; border-radius: 13px; }
+  .sv { font-size: 28px; }
+  .slb { font-size: 13px; margin-top: 5px; }
+  .note { font-size: 15px; padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; }
+  .chip { font-size: 15px; padding: 7px 16px; }
+  .btn { font-size: 18px; padding: 16px; border-radius: 14px; }
+
+  /* 페이지 패딩 */
+  .page { padding: 16px 16px calc(24px + env(safe-area-inset-bottom,0px)); }
+
+  /* 회원 리스트 행 */
+  .mr { padding: 12px 18px; border-radius: 13px; border-left-width: 4px; }
+  .mr-idx { font-size: 15px; width: 28px; margin-right: 10px; }
+  .mr-nm { font-size: 20px; width: 76px; }
+  .mr-avg { font-size: 26px; }
+  .mr-total { font-size: 15px; margin-top: 2px; }
+  .mr-chips { gap: 5px; margin-top: 5px; }
+  .gchip { font-size: 15px; padding: 4px 9px; border-radius: 6px; }
+  .gb { font-size: 13px; padding: 3px 9px; border-radius: 6px; }
+  .rb { font-size: 13px; padding: 3px 9px; }
+
+  /* 탭 버튼 */
+  .tab-btn { font-size: 15px; padding: 12px 8px; border-radius: 10px; }
+
+  /* 점수 입력 카드 */
+  .sc-card { padding: 16px; border-radius: 15px; margin-bottom: 12px; }
+  .sc-nm { font-size: 20px; width: 76px; }
+  .sc-team { font-size: 13px; }
+  .abs-tog { font-size: 13px; padding: 4px 14px; }
+  .sgf label { font-size: 13px; }
+  .sgf input { font-size: 26px; padding: 12px 4px; border-radius: 10px; }
+  .sc-sum { font-size: 14px; gap: 14px; margin-top: 10px; }
+
+  /* 벌금 */
+  .fc { padding: 14px; border-radius: 13px; margin-bottom: 12px; }
+  .fn-nm { font-size: 16px; }
+  .fn-bad { font-size: 18px; }
+  .fn-why { font-size: 14px; }
+  .fn-total { font-size: 15px; margin-top: 8px; padding-top: 8px; }
+  .fil { padding: 8px 14px; border-radius: 9px; margin-top: 8px; }
+  .fi-l { font-size: 13px; }
+  .fi-amt { font-size: 16px; }
+
+  /* 순위 */
+  .rk { padding: 13px 18px; border-radius: 13px; }
+  .rk-n { width: 38px; height: 38px; font-size: 20px; }
+  .rk-nm { font-size: 20px; width: 76px; }
+  .rk-total { font-size: 22px; }
+  .rk-avg { font-size: 13px; }
+  .rk-sub { font-size: 13px; }
+
+  /* 시상 */
+  .aw-card { padding: 18px; border-radius: 15px; margin-bottom: 12px; }
+  .aw-nm { font-size: 20px; }
+  .aw-sub { font-size: 13px; }
+  .aw-val { font-size: 24px; }
+  .eb { font-size: 13px; padding: 3px 8px; }
+
+  /* 성적 테이블 */
+  .htbl { font-size: 14px; }
+  .htbl th { padding: 9px 7px; }
+  .htbl td { padding: 8px 7px; }
+
+  /* 장부 */
+  .fr { padding: 8px 0; }
+  .fr-l { font-size: 15px; }
+  .fr-v { font-size: 17px; }
+  .add-inp { font-size: 16px; padding: 10px 13px; border-radius: 10px; }
+  .add-btn { font-size: 20px; padding: 10px 16px; }
+  .cb-btn { font-size: 14px; padding: 8px 14px; }
+
+  /* 회비 표 */
+  .dtbl { font-size: 13px; }
+  .dtbl th { padding: 6px 5px; }
+  .dtbl td { padding: 5px; }
+  .dc { font-size: 12px; padding: 3px 7px; min-width: 26px; }
+  .dnm { padding-left: 10px !important; font-size: 14px; }
+
+  /* 회원관리 */
+  .av-nm { font-size: 20px; width: 76px; }
+  .av-box { font-size: 20px; width: 60px; padding: 7px 4px; }
+
+  /* 설정 */
+  .cc { padding: 18px; border-radius: 15px; margin-bottom: 12px; }
+  .cc-title { font-size: 17px; }
+  .cc-desc { font-size: 14px; }
+  .cc-lbl { font-size: 15px; }
+  .cc-inp { font-size: 18px; width: 110px; padding: 7px 12px; }
+  .cc-sfx { font-size: 14px; }
+  .tog-name { font-size: 17px; }
+  .tog-desc { font-size: 13px; }
+  .tog { width: 54px; height: 30px; border-radius: 15px; }
+  .tog-dot { width: 22px; height: 22px; }
+  .tog.on .tog-dot { left: 28px; }
+
+  /* 메뉴 그리드 */
+  .menu-grid { gap: 12px; margin-bottom: 14px; }
+  .menu-box { padding: 20px 14px; border-radius: 16px; }
+  .menu-ic { font-size: 34px; margin-bottom: 8px; }
+  .menu-nm { font-size: 16px; }
+  .menu-sub { font-size: 13px; margin-top: 4px; }
+
+  /* 회칙 */
+  .ca { font-size: 17px; margin: 16px 0 7px; }
+  .cc2 { font-size: 15px; line-height: 2; padding-left: 14px; }
+
+  /* 입력 공통 */
+  .fi, .fs { font-size: 17px; padding: 13px 16px; border-radius: 12px; }
+
+  /* 토스트 */
+  #toast { font-size: 18px; padding: 12px 24px; bottom: 100px; }
+
+  /* 로그인 화면 2배 추가 확대 */
+  #login-screen { padding: 80px 40px; }
+  .login-logo { font-size: 80px; margin-bottom: 16px; }
+  .login-sub { font-size: 26px; margin-bottom: 60px; }
+  .login-box { padding: 60px 50px; border-radius: 28px; max-width: 700px; margin: 0 auto; }
+  .login-field { margin-bottom: 36px; }
+  .login-field label { font-size: 22px; margin-bottom: 14px; }
+  .login-field select, .login-field input { font-size: 24px; padding: 28px 22px; border-radius: 18px; }
+  .login-btn { font-size: 28px; padding: 34px; border-radius: 20px; margin-top: 16px; }
+  .login-err { font-size: 20px; margin-top: 20px; }
+  .login-hint { font-size: 18px; margin-top: 30px; }
+}
+
+/* 모바일(768px 미만)에서는 기존 크기 그대로 */
 </style>
 </head>
 <body>
